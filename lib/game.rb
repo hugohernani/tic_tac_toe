@@ -1,27 +1,23 @@
 class Game
   def initialize
-    @board = ["0", "1", "2", "3", "4", "5", "6", "7", "8"]
+    @board = Board.new(size: 3) 
+    @player = HumanPlayer.new(sign: 'O')
     @com = "X" # the computer's marker
     @hum = "O" # the user's marker
   end
 
   def start_game
-    # start by printing the board
-    render_board
-    puts "Enter [0-8]:"
     # loop through until the game was won or tied
-    until game_is_over(@board) || tie(@board)
-      get_human_spot
-      if !game_is_over(@board) && !tie(@board)
-        eval_board
-      end
-      render_board
+    until @board.finished?
+      @board.display(with_prompt: true)
+      @board.apply_next_move(@player)
     end
+    @board.display
     puts "Game over"
   end
 
   def render_board
-    puts " #{@board[0]} | #{@board[1]} | #{@board[2]} \n===+===+===\n #{@board[3]} | #{@board[4]} | #{@board[5]} \n===+===+===\n #{@board[6]} | #{@board[7]} | #{@board[8]} \n"
+    @board.display
   end
 
   def get_human_spot

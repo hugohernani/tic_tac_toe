@@ -2,8 +2,8 @@ class Player
   attr_reader :name, :sign
 
   def initialize(name:, sign:)
-    @name = name
-    @sign = sign
+    @name  = name
+    @sign  = sign
   end
 
   def get_move

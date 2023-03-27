@@ -1,43 +1,68 @@
 class Board
   def initialize(size:3, starts_with: 1)
+    @board_player = BoardPlayerChoice.new(self)
     @size  = size
     @slots = Array.new(size * size) do |index|
       Slot.new(index + starts_with)
     end
+    @starting_at = starts_with
   end
 
   def [](index)
-    @slots[index]
+    @slots.find { |slot| slot.index == index }
   end
   alias_method :value_at, :[]
 
   def []=(index, value)
-    @slots[index].value = value
+    self[index].value = value
   end
   alias_method :fill_with, :[]= 
 
-  def valid_move?(spot)
-    @slots[spot] && !@slots[spot].taken?
+  def apply_next_move(player)
+    spot = @board_player.get_move_for(player)
+    try_next_move_again(player) unless valid_move?(spot)
+
+    self[spot] = player.sign
   end
 
-  def display
+  def valid_move?(spot)
+    slot = self[spot]
+    slot && !slot.taken?
+  end
+
+  def display(with_prompt: false)
     rows = @slots.each_slice(@size).map do |slot_group|
       slot_group.join(" | ")
     end
-    puts " " + rows.join(row_delimiter) + "\n"
+    puts " #{rows.join(row_delimiter)}\n"
+    puts "#{choice_prompt_message}\n" if with_prompt
+  end
+
+  def finished?
+    fulfilled? || has_crossed_line?
   end
 
   def fulfilled?
     @slots.none? { |slot| slot.value.nil? }
   end
 
-  def has_line_with_uniq_value?
+  def has_crossed_line?
     [ horizontal_lines, vertical_lines, diagonal_lines ].any? do |lines|
-      lines.any?(&:uniq?)
+      lines.any?(&:crossed?)
     end
   end
 
   private
+
+  def try_next_move_again(player)
+    puts "Invalid choice. Try again: #{choice_prompt_message}"
+
+    apply_next_move(player)
+  end
+
+  def choice_prompt_message
+    "Enter [#{@starting_at}-#{@size * @size}]:"
+  end
 
   def row_delimiter
     line_symbol = "==="
@@ -52,7 +77,8 @@ class Board
   end
 
   def vertical_lines
-    (0...(@size * @size)).step(@size).each_slice(3).map do |slot_indices|
+    @size.times.map do |i|
+      slot_indices = [i, i + @size, i + @size * 2]
       Line.new(@slots.values_at(*slot_indices))
     end
   end
