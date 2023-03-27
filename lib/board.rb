@@ -30,12 +30,15 @@ class Board
     slot && !slot.taken?
   end
 
-  def display(with_prompt: false)
+  def display
     rows = @slots.each_slice(@size).map do |slot_group|
       slot_group.join(" | ")
     end
     puts " #{rows.join(row_delimiter)}\n"
-    puts "#{choice_prompt_message}\n" if with_prompt
+  end
+
+  def ask_player(player)
+    puts "It's #{player}'s turn. #{choice_prompt_message}"
   end
 
   def finished?

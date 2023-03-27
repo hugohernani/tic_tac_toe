@@ -1,52 +1,27 @@
 class Game
   def initialize
     @board = Board.new(size: 3) 
-    @player = HumanPlayer.new(sign: 'O')
-    @com = "X" # the computer's marker
-    @hum = "O" # the user's marker
   end
 
   def start_game
-    # loop through until the game was won or tied
+    setup_players
     until @board.finished?
-      @board.display(with_prompt: true)
-      @board.apply_next_move(@player)
+      @board.display
+      @board.ask_player(@players.current)
+      @board.apply_next_move(@players.current)
+      @players.switch_active!
     end
     @board.display
     puts "Game over"
   end
 
-  def render_board
-    @board.display
-  end
+  private
 
-  def get_human_spot
-    spot = nil
-    until spot
-      spot = gets.chomp.to_i
-      if @board[spot] != "X" && @board[spot] != "O"
-        @board[spot] = @hum
-      else
-        spot = nil
-      end
-    end
-  end
-
-  def eval_board
-    spot = nil
-    until spot
-      if @board[4] == "4"
-        spot = 4
-        @board[spot] = @com
-      else
-        spot = get_best_move(@board, @com)
-        if @board[spot] != "X" && @board[spot] != "O"
-          @board[spot] = @com
-        else
-          spot = nil
-        end
-      end
-    end
+  def setup_players
+    @players = GamePlayer.new(
+      HumanPlayer.new(sign: 'O'),
+      HumanPlayer.new(sign: 'X')
+    )
   end
 
   def get_best_move(board, next_player, depth = 0, best_score = {})
@@ -81,21 +56,4 @@ class Game
       return available_spaces[n].to_i
     end
   end
-
-  def game_is_over(b)
-
-    [b[0], b[1], b[2]].uniq.length == 1 ||
-    [b[3], b[4], b[5]].uniq.length == 1 ||
-    [b[6], b[7], b[8]].uniq.length == 1 ||
-    [b[0], b[3], b[6]].uniq.length == 1 ||
-    [b[1], b[4], b[7]].uniq.length == 1 ||
-    [b[2], b[5], b[8]].uniq.length == 1 ||
-    [b[0], b[4], b[8]].uniq.length == 1 ||
-    [b[2], b[4], b[6]].uniq.length == 1
-  end
-
-  def tie(b)
-    b.all? { |s| s == "X" || s == "O" }
-  end
-
 end
