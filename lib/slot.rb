@@ -1,9 +1,9 @@
 class Slot
   attr_accessor :index, :value
 
-  def initialize(index)
+  def initialize(index, value: nil)
     @index = index
-    @value = nil
+    @value = value 
   end
 
   def taken?
