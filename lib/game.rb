@@ -1,27 +1,24 @@
 class Game
-  def initialize
-    @board = Board.new(size: 3) 
-  end
-
   def start_game
-    setup_players
-    until @board.finished?
-      @board.display
-      @board.ask_player(@players.current)
-      @board.apply_next_move(@players.current)
-      @players.switch_active!
+    setup_game
+    loop do
+      @game_control.display_board
+      @game_control.next_move!
+      
+      break if @game_control.finished?
     end
-    @board.display
     puts "Game over"
   end
 
   private
 
-  def setup_players
-    @players = GamePlayer.new(
+  def setup_game
+    board = Board.new(size: 3)
+    players = GamePlayer.new(
       HumanPlayer.new(sign: 'O'),
       HumanPlayer.new(sign: 'X')
     )
+    @game_control = GameControl.new(board: board, players: players)
   end
 
   def get_best_move(board, next_player, depth = 0, best_score = {})
