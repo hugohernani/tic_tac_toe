@@ -41,6 +41,12 @@ class Board
     puts "It's #{player}'s turn. #{choice_prompt_message}"
   end
 
+  def tie_result?
+    return false if has_crossed_line?
+
+    fufilled?
+  end
+
   def finished?
     fulfilled? || has_crossed_line?
   end
@@ -50,8 +56,12 @@ class Board
   end
 
   def has_crossed_line?
-    [ horizontal_lines, vertical_lines, diagonal_lines ].any? do |lines|
-      lines.any?(&:crossed?)
+    !!crossed_line
+  end
+  
+  def crossed_line
+    [ horizontal_lines, vertical_lines, diagonal_lines ].find do |lines|
+      lines.find(&:crossed?)
     end
   end
 

@@ -1,6 +1,21 @@
 describe Line do
   subject(:line) { described_class.new(slot1, slot2, slot3) }
 
+  describe '#uniq_slot' do
+    context 'when all slots hold the same value' do
+      let(:slot1) { Slot.new(0, value: 'X') }
+      let(:slot2) { Slot.new(1, value: 'X') }
+      let(:slot3) { Slot.new(2, value: 'X') }
+
+      it 'gives uniq slot object back', :aggregate_failures do
+        slot = line.uniq_slot
+
+        expect(slot).to be_a(Slot)
+        expect(slot.value).to eq('X')
+      end
+    end
+  end
+
   describe '#crossed?' do
     subject(:crossed?) { line.crossed? }
 

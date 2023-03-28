@@ -4,7 +4,18 @@ class Line < Array
   end
 
   def crossed?
-    uniq_slots = uniq
-    uniq_slots.length == 1 && !uniq_slots[0].value.nil?
+    !uniq_slot&.value.nil?
+  end
+
+  def uniq_slot
+    return unless uniq_slots.length == 1
+
+    uniq_slots[0]
+  end
+
+  private
+
+  def uniq_slots
+    @uniq_slots ||= uniq
   end
 end

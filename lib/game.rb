@@ -7,7 +7,7 @@ class Game
       
       break if @game_control.finished?
     end
-    puts "Game over"
+    @game_control.display_result 
   end
 
   private

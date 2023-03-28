@@ -14,4 +14,10 @@ class GamePlayer
       @current = @first
     end
   end
+
+  def get_player(sign)
+    [ @first, @second ].find do |player|
+      player.sign == sign
+    end
+  end
 end
