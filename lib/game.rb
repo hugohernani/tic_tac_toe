@@ -16,7 +16,7 @@ class Game
     board = Board.new(size: 3)
     players = GamePlayer.new(
       HumanPlayer.new(sign: 'O'),
-      HumanPlayer.new(sign: 'X')
+      ComputerPlayer.new(sign: 'X', strategy: ComputerStrategy::Random.new(board))
     )
     @game_control = GameControl.new(board: board, players: players)
   end

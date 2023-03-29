@@ -1,11 +1,23 @@
+require_relative 'game_board/cloneable.rb'
+
 class Board
+  include GameBoard::Cloneable
+  include Enumerable
+
   def initialize(size:3, starts_with: 1)
-    @board_player = BoardPlayerChoice.new(self)
     @size  = size
     @slots = Array.new(size * size) do |index|
       Slot.new(index + starts_with)
     end
     @starting_at = starts_with
+  end
+
+  def each(&block)
+    if block_given?
+      @slots.each(&block)
+    else
+      to_enum(:each)
+    end
   end
 
   def [](index)
@@ -19,7 +31,7 @@ class Board
   alias_method :fill_with, :[]= 
 
   def apply_next_move(player)
-    spot = @board_player.get_move_for(player)
+    spot = player.get_move
     try_next_move_again(player) unless valid_move?(spot)
 
     self[spot] = player.sign
@@ -60,9 +72,11 @@ class Board
   end
   
   def crossed_line
-    [ horizontal_lines, vertical_lines, diagonal_lines ].find do |lines|
-      lines.find(&:crossed?)
-    end
+    [
+      horizontal_lines,
+      vertical_lines,
+      diagonal_lines
+    ].flatten(1).find(&:crossed?)
   end
 
   private

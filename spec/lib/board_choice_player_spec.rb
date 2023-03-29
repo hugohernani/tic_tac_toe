@@ -16,7 +16,7 @@ describe BoardPlayerChoice do
       end
     end
 
-    xcontext 'when player is ComputerPlayer' do
+    context 'when player is ComputerPlayer' do
       let(:player) { ComputerPlayer.new(sign: 'X') }
 
       # TODO

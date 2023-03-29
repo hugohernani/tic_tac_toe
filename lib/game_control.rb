@@ -16,6 +16,13 @@ class GameControl
   end
 
   def display_result
+    show_end_game_message
+    @board.display
+  end
+
+  private
+
+  def show_end_game_message
     return display_tie_message if @board.tie_result?
 
     crossed_line = @board.crossed_line
@@ -23,8 +30,6 @@ class GameControl
 
     display_winner(winning_player(crossed_line.uniq_slot))
   end
-
-  private
 
   def display_tie_message
     message = <<~MESSAGE

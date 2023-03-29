@@ -2,9 +2,17 @@ describe Board do
   subject(:board) { described_class.new(size: size, starts_with: starting_at) }
 
   let(:starting_at) { 1 }
+  let(:size) { 3 }
+
+  describe '#deep_clone' do
+    it 'builds a new board object' do
+      clone_board = Board.new(size: 1).deep_clone
+
+      expect(board).not_to eq(clone_board)
+    end
+  end
 
   describe '#apply_next_move' do
-    let(:size) { 2 }
     let(:player) { HumanPlayer.new(sign: 'X') }
     let(:mock_input) { "1\n" }
 
@@ -23,7 +31,6 @@ describe Board do
   describe '#valid_move?' do
     subject(:valid_move?) { board.valid_move?(spot) }
 
-    let(:size) { 3 }
     let(:spot) { 2 }
 
     context 'when spot is taken' do
@@ -70,7 +77,7 @@ describe Board do
   end
 
   describe '#fulfilled?' do
-    let(:size) { 2 } 
+    let(:size) { 2 }
     context 'when each slot has a value on it' do
       before do
         4.times do |i|
@@ -99,8 +106,6 @@ describe Board do
   end
 
   describe '#has_crossed_line?' do
-    let(:size) { 3 }
-
     context 'when first horizontal line is filled with a uniq value' do
       before do
         [1, 2, 3].each {|i| board[i] = 'X' }

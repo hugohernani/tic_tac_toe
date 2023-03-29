@@ -1,7 +1,7 @@
 class Player
   attr_reader :name, :sign
 
-  def initialize(name:, sign:)
+  def initialize(name:, sign:, **kargs)
     @name  = name
     @sign  = sign
   end
