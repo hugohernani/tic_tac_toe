@@ -105,6 +105,36 @@ describe Board do
     end
   end
 
+  describe '#first_move?' do
+    context 'when board has none slot filled' do
+      it { expect(board.first_move?).to eq true }
+    end
+
+    context 'when board has at least one slot filled' do
+      before { board[1] = 'X' }
+
+      it { expect(board.first_move?).to eq false }
+    end
+  end
+
+  describe '#central_slot' do
+    context 'with a 3x3 board' do
+      let(:size) { 3 }
+
+      it 'gives slot of index 5' do
+        expect(board.central_slot.index).to eq 5
+      end
+    end
+
+    context 'with a 4x4 board' do
+      let(:size) { 4 }
+
+      it 'gives slot of index 8' do
+        expect(board.central_slot.index).to eq 8
+      end
+    end
+  end
+
   describe '#has_crossed_line?' do
     context 'when first horizontal line is filled with a uniq value' do
       before do

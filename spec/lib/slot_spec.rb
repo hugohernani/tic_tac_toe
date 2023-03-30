@@ -3,6 +3,28 @@ describe Slot do
 
   let(:index) { 3 }
 
+  describe '#temporary_assignment' do
+    it 'changes value back after method is called' do
+      current_value = slot.value
+      slot.temporary_assignment('X')
+      expect(slot.value).to eq current_value
+    end
+
+    it 'assigns the given value temporarily', :aggregate_failures do
+      slot.temporary_assignment('X') do
+        expect(slot.value).to eq('X')
+      end
+
+      expect(slot.value).not_to eq('X')
+    end
+
+    it 'yields the control when passing a block' do
+      expect do |block|
+        slot.temporary_assignment('O', &block)
+      end.to yield_with_no_args
+    end
+  end
+
   describe '#taken?' do
     subject(:taken?) { slot.taken? }
 

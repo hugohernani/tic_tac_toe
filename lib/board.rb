@@ -2,7 +2,8 @@ require_relative 'game_board/cloneable.rb'
 
 class Board
   include GameBoard::Cloneable
-  include Enumerable
+
+  attr_reader :slots
 
   def initialize(size:3, starts_with: 1)
     @size  = size
@@ -10,14 +11,6 @@ class Board
       Slot.new(index + starts_with)
     end
     @starting_at = starts_with
-  end
-
-  def each(&block)
-    if block_given?
-      @slots.each(&block)
-    else
-      to_enum(:each)
-    end
   end
 
   def [](index)
@@ -56,7 +49,7 @@ class Board
   def tie_result?
     return false if has_crossed_line?
 
-    fufilled?
+    fulfilled?
   end
 
   def finished?
@@ -65,6 +58,24 @@ class Board
 
   def fulfilled?
     @slots.none? { |slot| slot.value.nil? }
+  end
+
+  def first_move?
+    @slots.all? { |slot| slot.value.nil? }
+  end
+
+  def is_central_slot_available?
+    !central_slot.taken?
+  end
+
+  def central_slot
+    @central_slot ||= begin
+      left_half_size = ((@slots.size - 1) / 2)
+      right_half_size = (@slots.size / 2)
+    
+      median = (left_half_size + right_half_size) / 2
+      self[median + 1]
+    end
   end
 
   def has_crossed_line?
