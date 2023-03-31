@@ -1,24 +1,19 @@
 class Game
-  def start_game
-    setup_game
-    loop do
-      @game_control.display_board
-      @game_control.next_move!
-      
-      break if @game_control.finished?
-    end
-    @game_control.display_result 
+  def start
+    info = GameSetup.new.start
+    game_control = GameControl.new(board: info.board, players: info.players)
+    run(game_control)
   end
 
   private
 
-  def setup_game
-    @board = Board.new(size: 3)
-    computer_strategy = ComputerStrategy::EagerToWin.new(@board, signs: ['X', 'O'])
-    players = GamePlayer.new(
-      HumanPlayer.new(sign: 'O'),
-      ComputerPlayer.new(sign: 'X', strategy: computer_strategy)
-    )
-    @game_control = GameControl.new(board: @board, players: players)
+  def run(game_control)
+    loop do
+      game_control.display_board
+      game_control.next_move!
+      
+      break if game_control.finished?
+    end
+    game_control.display_result 
   end
 end

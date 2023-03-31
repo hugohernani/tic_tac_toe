@@ -1,8 +1,10 @@
 module ComputerStrategy
   class MindfulMovement < Base
-    def initialize(board, signs:)
+    include ComputerStrategies::Signing
+
+    def initialize(board, sign:)
       super(board)
-      @signs = signs
+      @signs = build_signs(board, sign)
     end
 
     def get_choice
@@ -17,7 +19,7 @@ module ComputerStrategy
     end
 
     def wins_with?(board, slot)
-      @signs.any? do |sign|
+      @signs.to_a.any? do |sign|
         slot.temporary_assignment(sign) do
           return true if board.finished?
         end

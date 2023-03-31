@@ -1,8 +1,8 @@
 describe ComputerStrategy::EagerToWin do
-  subject(:strategy) { described_class.new(board, signs: signs) }
+  subject(:strategy) { described_class.new(board, sign: sign) }
 
   let(:board) { Board.new(size: 3) }
-  let(:signs) { ['C', 'H'] } # (C)omputer vs (H)uman
+  let(:sign) { 'C' } # (C)omputer vs (?)Human
 
   describe '#get_choice' do
     context 'when there is no winning movement for any player' do

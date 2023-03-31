@@ -1,8 +1,10 @@
 module ComputerStrategy
   class EagerToWin < Base
-    def initialize(board, signs:)
+    include ComputerStrategies::Signing
+    
+    def initialize(board, sign:)
       super(board)
-      @signs = signs
+      @signs = build_signs(board, sign)
     end
 
     def get_choice
@@ -15,7 +17,7 @@ module ComputerStrategy
     end
 
     def best_choice(board, available_slots)
-      [computer_sign, human_sign].each do |sign|
+      @signs.to_a.each do |sign|
         available_slots.each do |slot|
           slot.temporary_assignment(sign) do
             return slot if board.finished?
@@ -27,15 +29,7 @@ module ComputerStrategy
     end
 
     def central_spot_available_for_first_move?(board)
-      board.first_move? && board.is_central_slot_available?
-    end
-
-    def computer_sign
-      @signs[0] # X
-    end
-
-    def human_sign
-      @signs[1] # 0
+      board.is_central_slot_available?
     end
   end
 end

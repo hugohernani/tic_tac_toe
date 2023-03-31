@@ -1,8 +1,8 @@
 describe ComputerStrategy::MindfulMovement do
-  subject(:strategy) { described_class.new(board, signs: signs) }
+  subject(:strategy) { described_class.new(board, sign: sign) }
 
   let(:board) { Board.new(size: 3) }
-  let(:signs) { ['H', 'C'] } # (H)uman vs (C)omputer
+  let(:sign) { 'C' } # (C)omputer vs (?)Human
 
   describe '#get_choice' do
     context 'when there is no winning movement for any player' do

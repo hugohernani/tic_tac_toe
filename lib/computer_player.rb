@@ -9,6 +9,7 @@ class ComputerPlayer < Player
   end
 
   def get_move
+    sleep(0.5)
     @move_strategy.get_choice
   end
 end
