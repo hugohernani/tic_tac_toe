@@ -1,3 +1,5 @@
+Dir.glob(File.join(File.dirname(__FILE__), '**', '*.rb'), &method(:require))
+
 class Game
   def start
     info = GameSetup.new.start
