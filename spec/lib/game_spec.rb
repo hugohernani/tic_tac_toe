@@ -4,7 +4,9 @@ describe Game do
   describe '#start' do
     let(:game_info) { instance_double('GameSetup::Info', board: nil, players: nil) }
     let(:game_setup) { instance_double('GameSetup', start: game_info) }
-    let(:game_control) { instance_double('GameControl', display_board: nil, next_move!: nil, finished?: true, display_result: nil) }
+    let(:game_control) { instance_double('GameControl', display_board: nil, next_move!: nil,
+                                                        finished?: true, display_result: nil,
+                                                        clear_screen: nil) }
 
     before do
       allow(GameSetup).to receive(:new).and_return(game_setup)

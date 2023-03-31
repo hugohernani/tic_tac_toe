@@ -11,6 +11,7 @@ class Game
 
   def run(game_control)
     loop do
+      game_control.clear_screen
       game_control.display_board
       game_control.next_move!
       

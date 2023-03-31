@@ -9,6 +9,10 @@ class GameControl
     @players = players
   end
 
+  def clear_screen
+    system('clear') || system('cls')
+  end
+
   def next_move! 
     @board.ask_player(@players.current)
     @board.apply_next_move(@players.current)
@@ -16,6 +20,7 @@ class GameControl
   end
 
   def display_result
+    clear_screen
     show_end_game_message
     @board.display
   end
