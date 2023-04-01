@@ -38,9 +38,5 @@ module GamingSetup
         ComputerStrategy::EagerToWin.new(@board, sign: sign)
       end
     end
-
-    def random_strategy
-      @random_strategy ||= ComputerStrategy::Random.new(@board)
-    end
   end
 end

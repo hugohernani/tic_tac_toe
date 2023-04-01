@@ -2,6 +2,8 @@
 
 source "https://rubygems.org"
 
+gem "colorize", "~> 0.8.1"
+
 group :development, :test do
   gem "guard"
   gem "pry", "~> 0.14.2"

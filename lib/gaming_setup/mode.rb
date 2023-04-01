@@ -27,16 +27,16 @@ module GamingSetup
       strategy_setup = GamingSetup::ChooseStrategy.new(@board)
       case @choice
       when :hh
-        GamePlayer.new(HumanPlayer.new(sign: 'O'), HumanPlayer.new(sign: 'X'))
+        GamePlayer.new(HumanPlayer.new(sign: blue_O_sign), HumanPlayer.new(sign: red_X_sign))
       when :cc
         GamePlayer.new(
-          ComputerPlayer.new(sign: 'O', strategy: strategy_setup.ask('O')),
-          ComputerPlayer.new(sign: 'X', strategy: strategy_setup.ask('X'))
+          ComputerPlayer.new(sign: blue_O_sign, strategy: strategy_setup.ask(blue_O_sign)),
+          ComputerPlayer.new(sign: red_X_sign, strategy: strategy_setup.ask(red_X_sign))
         )
       when :hc
         GamePlayer.new(
-          HumanPlayer.new(sign: 'O'),
-          ComputerPlayer.new(sign: 'X', strategy: strategy_setup.ask('X'))
+          HumanPlayer.new(sign: blue_O_sign),
+          ComputerPlayer.new(sign: red_X_sign, strategy: strategy_setup.ask(red_X_sign))
         )
       end
     end
@@ -48,6 +48,14 @@ module GamingSetup
   
       choose_message
       ask
+    end
+
+    def blue_O_sign
+      PlayerSign.new(value: 'O', color: 'blue')
+    end
+
+    def red_X_sign
+      PlayerSign.new(value: 'X', color: 'red')
     end
   end
 end

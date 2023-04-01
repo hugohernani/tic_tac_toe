@@ -13,7 +13,7 @@ module ComputerStrategies
         slot.value && slot.value != sign
       end&.value
 
-      opposite_sign ||= 'O'
+      opposite_sign ||= PlayerSign.new(value: 'O')
       ComputerSigns.new(sign, opposite_sign)
     end
   end

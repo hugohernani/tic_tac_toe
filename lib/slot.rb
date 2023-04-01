@@ -18,7 +18,7 @@ class Slot
   end
 
   def to_s
-    @value ? @value.to_s : @index.to_s
+    @value ? @value.colorized : @index.to_s
   end
 
   def ==(other)
